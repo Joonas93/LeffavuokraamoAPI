@@ -1,0 +1,38 @@
+extends layout
+
+block content
+  div.container
+    div.row
+      div.col-md-3
+        h3 Syötä elokuvan tiedot
+        form(method="post", action="/movies")
+          div.form-group
+            label Elokuvan nimi
+            input#movieName.form-control(type="text", name="name" required)
+            label Genre
+            select.form-control#genreSelect(name="genre")
+              option Kauhu
+              option Komedia
+              option Toiminta
+            label Elokuvan kesto
+            input#movieLength.form-control(type="number", placeholder="Syötä kesto minuuteissa", name="length" required)
+            label Julkaisuvuosi
+            input#movieReleaseYear.form-control(type="number", name="releaseYear" required)
+            label Elokuvan kuvaus
+            textarea#moviePlot.form-control(rows=5, name="plot" required)
+            label Elokuvien määrä kaupassa
+            input#movieAmountInStock.form-control(type="number", name="amountInStock" required)
+            label IMDB-linkki
+            input#movieImdbUrl.form-control(type="text", name="imdbUrl")
+            input(type="hidden", name="_csrf", value=token)
+           button.btn.btn-primary Lähetä
+      div.col-md-9
+        table.table.table-hover
+          thead
+            tr
+              th(scope="col") ID
+              th(scope="col") Elokuvan nimi
+              th(scope="col") Julkaisuvuosi
+              th(scope="col") Genre
+              th(scope="col") Elokuvaa vapaana
+          tbody#indexMovieTable

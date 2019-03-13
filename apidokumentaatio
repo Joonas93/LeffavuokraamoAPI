@@ -1,0 +1,82 @@
+Kaikille avoimen datan haku
+
+Endpointteja kutsutaan GET-metodilla, jolloin API palauttaa vastaukset JSON-muodossa. 
+
+Endpointit:
+
+GET: http://localhost:3000/api/movies/search
+
+
+GET: http://localhost:3000/api/movies/
+
+Attribuuttien kuvaus:
+
+name = Elokuvan nimi
+id = Elokuvan ID
+length = Elokuvan pituus minuuteissa
+releaseYear = Elokuvan julkaisuvuosi
+imdbUrl = Linkki elokuvan IMDB-sivulle (jos on)
+plot = Elokucan juoni
+amounInStock = Paljonko elokuvia on varastossa
+genre = Elokuvan laji
+
+Haku parametreillä:
+
+API:sta voi hakea useammalla "yhtäkuin" parametrillä. Haku tapahtuu käyttäen http://localhost:3000/api/movies/search endpointtia tekemällä queryitä attribuuteilla.
+
+Esimerkkihakuja:
+
+http://localhost:3000/api/movies/search?name=Matti
+http://localhost:3000/api/movies/search?genre=kauhu
+http://localhost:3000/api/movies/search?name=Star+Is+Born&releaseYear=2018
+
+
+Kaikkien elokuvien haku:
+
+http://localhost:3000/api/movies/
+
+Rajoitetut operaatiot API:ssa:
+
+Elokuvien lisääminen, poistaminen ja tietojen päivittäminen vaativat adminin api-avaimen.
+
+api-avain: 4138AB7CF9DEDDECA97EB2545FD7A
+x-api-key:  4138AB7CF9DEDDECA97EB2545FD7A
+
+Avain kuuluu laittaa headeriin x-api-key:n arvoksi. Jos api-avainta ei ole tai avaimessa ei ole admin-oikeuksia, palautetaan vastauksena error 401.
+
+Endpointit:
+
+POST: http://localhost:3000/api/movies/addMovie
+PUT: http://localhost:3000/api/movies/updateMovie
+DELETE: http://localhost:3000/api/movies/deleteMovie
+
+Skeema:
+
+name = merkkijono, maksimipituus = 100, pakollinen
+lenght = kokonaisluku, minimisuuruus = 10, pakollinen
+imdbUrl = merkkijono, maksimipituus = 100
+genre = merkkijono, maksimipituus = 50, pakollinen
+releaseYear = kokonaisluku, minimisuuruus = 1900, maksimisuuruus = kuluvan vuoden vuosiluku, pakollinen
+amounInStock = kokonaisluku, minimisuuruus = 0, pakollinen
+plot = merkkijono, maksimipituus = 400
+id = kokonaisnumero. Tietokanta generoi.
+
+Elokuvan lisääminen tietokantaan:
+
+POST: http://localhost:3000/api/movies/addMovie
+
+Bodyssa määritellään attribuutittien nimet ja niiden arvot skeeman mukaisesti. 
+
+Elokuvan poistaminen tietokannasta:
+
+DELETE: http://localhost:3000/api/movies/deleteMovie/*tähän elokuvan id*
+
+Elokuvan päivittäminen tietokannassa:
+
+PUT: http://localhost:3000/api/movies/updateMovie
+
+Päivittämisessä ainoa pakollinen attribuutti on elokuvan ID. Tietojen muokkaaminen määritellään attribuutin nimellä ja sen arvoksi tulee uusi haluttu arvo.
+
+
+
+
