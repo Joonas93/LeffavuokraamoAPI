@@ -15,7 +15,7 @@ const schema = {
     releaseYear: Joi.number().integer().min(1900).max(year).required(),
     amountInStock: Joi.number().integer().min(0).required(),
     plot: Joi.string().max(400),
-    _csrf: Joi.string()
+    _csrf: Joi.string() //not included in database
 
 }
 
