@@ -4,11 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const bodyParser = require('body-parser')
-const csurf = require('csurf');
-
-const csrfMiddleware = csurf({
-    cookie: true
-});
 
 
 var con = require('./connection.js')
@@ -35,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/bootstrap", express.static(path.join(__dirname, '/node_modules/bootstrap/dist/css/')));
 app.use("/jquery", express.static(path.join(__dirname, '/node_modules/jquery/dist/')));
 app.use("/javascripts", express.static(path.join(__dirname, '/public/javascripts/')));
-app.use(csrfMiddleware);
+//app.use(csrfMiddleware);
 app.use(bodyParser.json());
 
 //routers

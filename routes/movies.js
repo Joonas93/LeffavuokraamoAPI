@@ -3,6 +3,13 @@ var router = express.Router();
 const Joi = require('joi');
 var connection = require("../connection.js");
 var sql =''
+const cookieParser = require('cookie-parser');
+const csurf = require('../node_modules/csurf');
+const csrfMiddleware = csurf({
+    cookie: true
+});
+router.use(csrfMiddleware);
+
 
 const schema = require('../schemas/schema.js')
 
@@ -10,7 +17,7 @@ const schema = require('../schemas/schema.js')
 
 
 
-// Post new movie to database. Used in webform.
+// Post new movie to database from form
 router.post('/', function(req, res) {
     console.log(req.body)
 
@@ -43,7 +50,7 @@ router.post('/', function(req, res) {
             }
             ;
         });
-        res.render('index')
+        res.render('index',{ token: req.csrfToken() })
     }
     ;
 })

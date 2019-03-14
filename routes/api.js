@@ -6,7 +6,9 @@ const schema = require("../schemas/schema.js");
 const updateSchema = require("../schemas/updateSchema.js");
 const selectSchema = require("../schemas/selectSchema.js");
 
-//use parameters to filter result
+
+
+//use parameters to filter result. They are found in apidokumentaatio.txt
 router.get('/search', function(req, res, next) {
         console.log("m")
         if(isEmpty(req.query)){return res.status(400).send("no parameters found")}
@@ -48,7 +50,7 @@ router.get('/', function(req, res, next) {
     })
 });
 
-//Update single movie in database.
+//Update single movie in database. see apidokumentaatio.txt
 router.put('/updateMovie', function(req,res){
     const apikey = req.get('x-api-key');
     if(apikey==null) { return res.status(401).send('No apikey detected in header')}
@@ -66,6 +68,7 @@ router.put('/updateMovie', function(req,res){
                     throw err;
                 }
                 connection.query(sql, req.body, function (error, results, fields) {
+
 
                     if (error) {
                         return connection.rollback(function () {
@@ -87,7 +90,7 @@ router.put('/updateMovie', function(req,res){
     })
 })
 
-// Add movie to database
+// Add movie to database. see apidokumentaatio.txt
 router.post('/addMovie', function(req,res){
     const apikey = req.get('x-api-key');
     if(apikey==null) { return res.status(401).send('No apikey detected in header')}
@@ -113,8 +116,9 @@ router.post('/addMovie', function(req,res){
                         return connection.rollback(function () {
                             res.status(400).json({error:error})
                         });
-                        res.status(200).json({movies:results});
+
                     }
+                    res.status(200).send(results);
                 })
             })
             connection.commit(function (err) {
@@ -128,7 +132,7 @@ router.post('/addMovie', function(req,res){
         })
 })
 
-//Delete movie using id
+//Delete movie using id. see apidokumentaatio.txt
 router.delete('/deleteMovie/:id', function(req, res) {
 
     const apikey = req.get('x-api-key');
@@ -139,28 +143,30 @@ router.delete('/deleteMovie/:id', function(req, res) {
       if(!isAdmin) {return res.status(401).send('Access is denied')}
       else {
 
-          const result = Joi.validate(req.params.id, schema.id);
+          const result = Joi.validate(req.params.id, updateSchema.id);
+
           if (result.error) {
             return  res.status(400).send(result.error)
           }
           sql = 'DELETE FROM movies WHERE ID = ?';
           connection.beginTransaction(function (err) {
               if (err) {
-                  throw err;
+                  console.log(err);
               }
               connection.query(sql, req.params.id, function (error, results, fields) {
                   if (error) {
                       return connection.rollback(function () {
-                          throw error;
+                          console.log(error);
                       });
-                      res.status(200).json({movies:results});
+
                   }
+                  res.status(200).json({result:results});
               })
           })
           connection.commit(function (err) {
               if (err) {
                   return connection.rollback(function () {
-                      throw err;
+                     console.log(err) ;
                   });
               }
           });
@@ -172,7 +178,10 @@ function checkIfAdmin(apikey,callback){
     console.log("admin")
     let sql1 = 'SELECT * FROM api_keys WHERE apiKey = \"'+apikey+'\" AND isAdmin = 1';
     connection.query(sql1, function (err,result,fields) {
+        if(err)console.log(err)
+        console.log("mmmmm1")
         if (result.length==0){return callback(false)}
+        console.log("mmmmm2")
         return callback(true);
     })
 }

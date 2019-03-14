@@ -1,6 +1,6 @@
 
 /*
-Schema is used in api.js for updateting table row
+Schema is used in api.js for updateting or deleting table row
  */
 const Joi = require('joi');
 
